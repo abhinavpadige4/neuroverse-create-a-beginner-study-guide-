@@ -1,35 +1,38 @@
-# SQL Joins — Beginner Study Guide
+# SQL Joins — A Beginner Study Guide
 
-A beginner-friendly Markdown guide to the four most common SQL joins.
+A beginner-friendly study guide covering the four most common SQL joins:
+**INNER**, **LEFT**, **RIGHT**, and **FULL**. Each join type has a short
+explanation, one small worked example using the same two sample tables,
+and a note on when to use it. A final section collects the mistakes
+beginners make most often.
 
-## Contents
+## Files
 
-- [sql_joins_guide.md](./sql_joins_guide.md) — the full study guide
+- [`sql_joins_guide.md`](./sql_joins_guide.md) — the full markdown study guide (source of truth).
+- [`index.html`](./index.html) — a styled HTML rendering of the same guide, served at the repo root.
 
-## What's Inside
+## What's inside
 
-- **Sample tables** (`employees` and `departments`) used consistently across all examples.
-- **INNER JOIN** — explanation + example + result.
-- **LEFT JOIN** — explanation + example + result.
-- **RIGHT JOIN** — explanation + example + result.
-- **FULL JOIN** — explanation + example + result.
-- **Visual summary** of which rows each join keeps.
-- **Common Mistakes** section covering 8 typical pitfalls:
-  1. `ON` vs `WHERE`
-  2. `NULL` comparisons
-  3. Accidental Cartesian products
-  4. Joining on non-unique columns
-  5. Database support differences (MySQL lacks `RIGHT`/`FULL` JOIN)
-  6. Missing table aliases
-  7. `JOIN` vs `CROSS JOIN`
-  8. Joining on mismatched data types
-- **Quick reference cheat sheet** table.
-- **Practice exercises** with solutions.
+1. **Sample Tables** — two tiny tables (`employees`, `departments`) with
+   deliberate "orphan" rows (a `NULL` department and an empty department)
+   so every join type has something interesting to show.
+2. **INNER JOIN** — only matching rows from both sides.
+3. **LEFT JOIN** — every left row, `NULL` on the right when no match.
+4. **RIGHT JOIN** — every right row, `NULL` on the left when no match.
+5. **FULL JOIN** — every row from both sides, `NULL` where there's no match.
+6. **Visual Summary** — a small ASCII diagram of the four join shapes.
+7. **Common Mistakes** — seven pitfalls:
+   - `NULL = NULL` is not true
+   - `WHERE` vs `ON` (turns a LEFT JOIN into an INNER JOIN)
+   - Accidental Cartesian products
+   - Joining on non-unique columns (row duplication)
+   - Assuming `RIGHT JOIN` is portable
+   - Forgetting `FULL JOIN` isn't universal (MySQL)
+   - Mixing up which side is "kept"
+8. **Quick Reference** — a one-glance table of what each join keeps.
+9. **Practice Ideas** — five exercises to test your understanding.
 
-## Who Is This For?
+## Viewing
 
-Anyone learning SQL who wants a clear, example-driven explanation of joins — no prior experience required beyond basic `SELECT` queries.
-
-## How to Use
-
-Open `sql_joins_guide.md` in any Markdown viewer (GitHub, VS Code, Obsidian, Typora, etc.) and read top to bottom. Each join section is self-contained.
+Open `index.html` in a browser, or read `sql_joins_guide.md` in any
+Markdown viewer.
