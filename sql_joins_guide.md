@@ -1,25 +1,25 @@
 # SQL Joins — A Beginner Study Guide
 
-> Learn how to combine rows from two tables using `INNER`, `LEFT`, `RIGHT`, and `FULL` joins. Each section includes a short explanation, a small worked example, and a visual intuition. A final section lists the most common mistakes beginners make.
+SQL joins are how you combine rows from two (or more) tables based on a related
+column. They are the single most important concept for writing useful queries
+once you move beyond a single table.
+
+This guide covers the four joins you will use 95% of the time:
+
+- **INNER JOIN** — only matching rows from both tables
+- **LEFT JOIN** — all rows from the left table, matches from the right (or NULL)
+- **RIGHT JOIN** — all rows from the right table, matches from the left (or NULL)
+- **FULL JOIN** — all rows from both tables, matched where possible
+
+At the end you will find a **Common Mistakes** section that covers the pitfalls
+that trip up almost every beginner.
 
 ---
 
-## Table of Contents
+## Sample Tables Used Throughout
 
-1. [The Sample Tables](#1-the-sample-tables)
-2. [INNER JOIN](#2-inner-join)
-3. [LEFT JOIN (LEFT OUTER JOIN)](#3-left-join-left-outer-join)
-4. [RIGHT JOIN (RIGHT OUTER JOIN)](#4-right-join-right-outer-join)
-5. [FULL JOIN (FULL OUTER JOIN)](#5-full-join-full-outer-join)
-6. [Quick Comparison](#6-quick-comparison)
-7. [Common Mistakes](#7-common-mistakes)
-8. [Practice Exercises](#8-practice-exercises)
-
----
-
-## 1. The Sample Tables
-
-We'll use two small tables throughout this guide so you can follow along easily.
+Every example in this guide uses the same two small tables so you can follow
+along easily.
 
 ### `employees`
 
@@ -27,268 +27,234 @@ We'll use two small tables throughout this guide so you can follow along easily.
 |-------:|------------|--------:|
 |      1 | Alice      |       1 |
 |      2 | Bob        |       2 |
-|      3 | Carol      |       3 |
+|      3 | Carol      |       1 |
 |      4 | Dave       |       9 |
 
 ### `departments`
 
-| dept_id | dept_name     |
-|--------:|---------------|
-|       1 | Engineering   |
-|       2 | Sales         |
-|       3 | Marketing     |
-|       4 | HR            |
+| dept_id | dept_name   |
+|--------:|-------------|
+|       1 | Engineering |
+|       2 | Sales       |
+|       3 | Marketing   |
 
-Notice two interesting facts:
+Notice two things that will matter for the examples:
 
-- **Dave** (`emp_id = 4`) has `dept_id = 9`, but there is **no department 9**.
-- **HR** (`dept_id = 4`) exists, but **no employee** belongs to it.
+- **Dave** has `dept_id = 9`, but there is no department 9. He is an employee
+  with no matching department.
+- **Marketing** (dept_id 3) has no employees at all. It is a department with
+  no matching employee.
 
-These two "orphan" rows are exactly what make LEFT, RIGHT, and FULL joins interesting.
+These two "orphan" rows are exactly what make LEFT, RIGHT, and FULL joins
+interesting.
 
 ---
 
-## 2. INNER JOIN
+## 1. INNER JOIN
 
 ### What it does
 
-An `INNER JOIN` returns **only the rows that have a matching value in both tables**. If a row in the left table has no match in the right table (or vice versa), it is dropped.
+An `INNER JOIN` returns **only the rows that have a match in both tables**.
+If a row on either side has no match, it is dropped entirely.
 
 ### Example
 
 ```sql
-SELECT e.emp_id, e.name, d.dept_name
+SELECT e.name, d.dept_name
 FROM employees e
-INNER JOIN departments d
-  ON e.dept_id = d.dept_id;
+INNER JOIN departments d ON e.dept_id = d.dept_id;
 ```
 
 ### Result
 
-| emp_id | name  | dept_name   |
-|-------:|-------|-------------|
-|      1 | Alice | Engineering |
-|      2 | Bob   | Sales       |
-|      3 | Carol | Marketing   |
+| name  | dept_name   |
+|-------|-------------|
+| Alice | Engineering |
+| Bob   | Sales       |
+| Carol | Engineering |
 
-### Why Dave and HR are missing
+### Why this result?
 
-- Dave's `dept_id = 9` has no match in `departments` → dropped.
-- HR's `dept_id = 4` has no match in `employees` → dropped.
+- Alice, Bob, and Carol all have a `dept_id` that exists in `departments`, so
+  they appear.
+- **Dave is missing** because there is no department with `dept_id = 9`.
+- **Marketing is missing** because no employee has `dept_id = 3`.
 
-### Visual intuition
+### When to use it
 
-```
-employees   ∩   departments
-   ┌───┐         ┌───┐
-   │ A │         │ E │
-   │ B │         │ S │
-   │ C │         │ M │
-   │ D │         │ H │
-   └───┘         └───┘
-        INNER JOIN
-        ┌───────┐
-        │ A-E   │
-        │ B-S   │
-        │ C-M   │
-        └───────┘
-```
+Use `INNER JOIN` when you only care about rows that exist on **both** sides.
+For example: "Give me every employee along with their department name" — you
+don't want to see employees whose department is unknown.
+
+> **Note:** `INNER JOIN` is the default join. Writing just `JOIN` is the same
+> as writing `INNER JOIN`.
 
 ---
 
-## 3. LEFT JOIN (LEFT OUTER JOIN)
+## 2. LEFT JOIN (LEFT OUTER JOIN)
 
 ### What it does
 
-A `LEFT JOIN` returns **all rows from the left table**, plus the matching rows from the right table. If there is no match on the right, the right-side columns are filled with `NULL`.
+A `LEFT JOIN` returns **all rows from the left table**, plus the matching rows
+from the right table. If there is no match on the right, the right-side columns
+are filled with `NULL`.
 
 ### Example
 
 ```sql
-SELECT e.emp_id, e.name, d.dept_name
+SELECT e.name, d.dept_name
 FROM employees e
-LEFT JOIN departments d
-  ON e.dept_id = d.dept_id;
+LEFT JOIN departments d ON e.dept_id = d.dept_id;
 ```
 
 ### Result
 
-| emp_id | name  | dept_name   |
-|-------:|-------|-------------|
-|      1 | Alice | Engineering |
-|      2 | Bob   | Sales       |
-|      3 | Carol | Marketing   |
-|      4 | Dave  | **NULL**    |
+| name  | dept_name   |
+|-------|-------------|
+| Alice | Engineering |
+| Bob   | Sales       |
+| Carol | Engineering |
+| Dave  | NULL        |
 
-### Why Dave shows up with NULL
+### Why this result?
 
-Dave is in the left table (`employees`), so he is always kept. There is no department 9, so `dept_name` becomes `NULL`.
+- Alice, Bob, and Carol behave exactly like in the INNER JOIN.
+- **Dave is now included**, but because there is no matching department,
+  `dept_name` is `NULL`.
+- **Marketing is still missing** — LEFT JOIN only guarantees rows from the
+  *left* table.
 
-### Visual intuition
+### When to use it
 
-```
-employees   LEFT JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ D-NULL   │  ← Dave kept, dept is NULL
-        └──────────┘
-```
-
-> **Tip:** `LEFT JOIN` is the most common join you'll use in practice — for example, "list all customers, even those who have never placed an order."
+Use `LEFT JOIN` when you want **everything from the "main" table**, even if
+there is no matching row on the other side. For example: "List every employee,
+and show their department if we know it."
 
 ---
 
-## 4. RIGHT JOIN (RIGHT OUTER JOIN)
+## 3. RIGHT JOIN (RIGHT OUTER JOIN)
 
 ### What it does
 
-A `RIGHT JOIN` returns **all rows from the right table**, plus the matching rows from the left table. If there is no match on the left, the left-side columns are filled with `NULL`.
+A `RIGHT JOIN` is the mirror image of a LEFT JOIN. It returns **all rows from
+the right table**, plus the matching rows from the left. If there is no match
+on the left, the left-side columns are filled with `NULL`.
 
 ### Example
 
 ```sql
-SELECT e.emp_id, e.name, d.dept_name
+SELECT e.name, d.dept_name
 FROM employees e
-RIGHT JOIN departments d
-  ON e.dept_id = d.dept_id;
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;
 ```
 
 ### Result
 
-| emp_id | name | dept_name |
-|-------:|------|-----------|
-|      1 | Alice| Engineering |
-|      2 | Bob  | Sales     |
-|      3 | Carol| Marketing |
-| **NULL** | **NULL** | HR |
+| name  | dept_name   |
+|-------|-------------|
+| Alice | Engineering |
+| Bob   | Sales       |
+| Carol | Engineering |
+| NULL  | Marketing   |
 
-### Why HR shows up with NULLs
+### Why this result?
 
-HR is in the right table (`departments`), so it is always kept. No employee has `dept_id = 4`, so `emp_id` and `name` become `NULL`.
+- Alice, Bob, and Carol still match.
+- **Marketing is now included**, with `name = NULL` because no employee belongs
+  to it.
+- **Dave is missing** — RIGHT JOIN only guarantees rows from the *right* table.
 
-### Visual intuition
+### When to use it
 
-```
-employees   RIGHT JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ NULL-H   │  ← HR kept, employee is NULL
-        └──────────┘
-```
+Use `RIGHT JOIN` when you want **everything from the right table**, even if
+there is no matching row on the left. For example: "List every department, and
+show one of its employees if there is one."
 
-> **Note:** `RIGHT JOIN` is rarely used because you can always rewrite it as a `LEFT JOIN` by swapping the tables. Some databases (e.g., MySQL) don't even support `RIGHT JOIN` directly.
+> **Tip:** Most developers prefer to write a `LEFT JOIN` and just swap the
+> order of the tables instead of using `RIGHT JOIN`. The result is identical
+> and the query is easier to read.
 
 ---
 
-## 5. FULL JOIN (FULL OUTER JOIN)
+## 4. FULL JOIN (FULL OUTER JOIN)
 
 ### What it does
 
-A `FULL JOIN` returns **all rows from both tables**. Rows that match are combined; rows that don't match are kept with `NULL` on the side that has no match.
+A `FULL JOIN` returns **all rows from both tables**. Where there is a match,
+the rows are combined. Where there is no match on either side, the missing
+columns are filled with `NULL`.
 
 ### Example
 
 ```sql
-SELECT e.emp_id, e.name, d.dept_name
+SELECT e.name, d.dept_name
 FROM employees e
-FULL JOIN departments d
-  ON e.dept_id = d.dept_id;
+FULL JOIN departments d ON e.dept_id = d.dept_id;
 ```
 
 ### Result
 
-| emp_id | name | dept_name   |
-|-------:|------|-------------|
-|      1 | Alice| Engineering |
-|      2 | Bob  | Sales       |
-|      3 | Carol| Marketing   |
-|      4 | Dave | **NULL**    |
-| **NULL** | **NULL** | HR |
+| name  | dept_name   |
+|-------|-------------|
+| Alice | Engineering |
+| Bob   | Sales       |
+| Carol | Engineering |
+| Dave  | NULL        |
+| NULL  | Marketing   |
 
-### Why both Dave and HR appear
+### Why this result?
 
-- Dave has no matching department → kept with `dept_name = NULL`.
-- HR has no matching employee → kept with `emp_id = NULL` and `name = NULL`.
+- The three matched employees appear as before.
+- **Dave** appears with `dept_name = NULL` (no matching department).
+- **Marketing** appears with `name = NULL` (no matching employee).
 
-### Visual intuition
+### When to use it
 
-```
-employees   FULL JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ D-NULL   │  ← Dave kept
-        │ NULL-H   │  ← HR kept
-        └──────────┘
-```
+Use `FULL JOIN` when you want to see **everything from both tables** and
+identify mismatches on either side. It is very useful for reconciliation and
+data-quality checks, e.g. "Show me every customer and every order, and I want
+to see customers with no orders *and* orders with no customer."
 
-> **Note:** Not every database supports `FULL JOIN`. MySQL, for example, does not — you'd simulate it with `LEFT JOIN ... UNION ... RIGHT JOIN`.
+> **Note:** Not every database supports `FULL JOIN` directly. MySQL, for
+> example, does not — you can emulate it with a `LEFT JOIN ... UNION ...
+> RIGHT JOIN`.
 
 ---
 
-## 6. Quick Comparison
+## Visual Summary
 
-| Join Type   | Left rows kept? | Right rows kept? | Matched rows |
-|-------------|:---------------:|:----------------:|:------------:|
-| INNER       | Only if matched | Only if matched  | ✅           |
-| LEFT        | **Always**      | Only if matched  | ✅           |
-| RIGHT       | Only if matched | **Always**       | ✅           |
-| FULL        | **Always**      | **Always**       | ✅           |
+Imagine the two tables as two overlapping circles (a Venn diagram):
 
-**Rule of thumb:**
+```
+   INNER JOIN        LEFT JOIN         RIGHT JOIN        FULL JOIN
+   ┌─────────┐      ┌─────────┐       ┌─────────┐       ┌─────────┐
+   │         │      │         │       │         │       │         │
+   │   ●●●   │      │ ●●●     │       │     ●●● │       │ ●●●     │
+   │         │      │ ●●●     │       │     ●●● │       │ ●●●     │
+   │         │      │         │       │         │       │         │
+   └─────────┘      └─────────┘       └─────────┘       └─────────┘
+   only overlap     left + overlap    overlap + right   everything
+```
 
-- Use `INNER JOIN` when you only want rows that exist in **both** tables.
-- Use `LEFT JOIN` when you want **all rows from the "main" table**, even if there's no match.
-- Use `RIGHT JOIN` only when it reads more naturally (rare).
-- Use `FULL JOIN` when you want to see **everything** from both sides, including orphans.
+- **INNER** = the overlap only.
+- **LEFT** = the whole left circle (overlap + left-only).
+- **RIGHT** = the whole right circle (overlap + right-only).
+- **FULL** = both circles (everything).
 
 ---
 
-## 7. Common Mistakes
+## Common Mistakes
 
-### Mistake 1: Forgetting that `NULL` is not equal to `NULL`
+These are the pitfalls that show up in almost every beginner's SQL. If you
+avoid these, you will write correct joins most of the time.
 
-In SQL, `NULL = NULL` evaluates to `UNKNOWN`, not `TRUE`. This means a join condition like `ON a.x = b.x` will **never** match two `NULL` values.
+### 1. Confusing `ON` with `WHERE`
 
-```sql
--- This will NOT match rows where both x are NULL
-SELECT * FROM a JOIN b ON a.x = b.x;
-
--- To match NULLs, use IS
-SELECT * FROM a JOIN b ON a.x IS NOT DISTINCT FROM b.x;  -- PostgreSQL
--- or
-SELECT * FROM a JOIN b ON (a.x = b.x OR (a.x IS NULL AND b.x IS NULL));
-```
-
-### Mistake 2: Confusing `ON` with `WHERE` in outer joins
-
-With `INNER JOIN`, `ON` and `WHERE` often produce the same result. With outer joins, they do **not**.
+`ON` defines **how** rows are matched. `WHERE` filters rows **after** the join
+has happened. Mixing them up changes the result dramatically.
 
 ```sql
--- WRONG: filters AFTER the join, turning LEFT JOIN into INNER JOIN
+-- WRONG: filters AFTER the join, so unmatched rows become NULL and are dropped
 SELECT *
 FROM employees e
 LEFT JOIN departments d ON e.dept_id = d.dept_id
@@ -297,103 +263,133 @@ WHERE d.dept_name = 'Engineering';
 -- RIGHT: filters the right table BEFORE the join
 SELECT *
 FROM employees e
-LEFT JOIN departments d ON e.dept_id = d.dept_id
-                       AND d.dept_name = 'Engineering';
+LEFT JOIN departments d
+       ON e.dept_id = d.dept_id
+      AND d.dept_name = 'Engineering';
 ```
 
-The first query drops Dave (because his `dept_name` is `NULL` and fails the `WHERE`). The second keeps Dave with `NULL` department columns.
+The first query silently turns your LEFT JOIN into an INNER JOIN because the
+`WHERE` clause removes every row where `dept_name` is `NULL`.
 
-### Mistake 3: Accidentally creating a Cartesian product
+### 2. Forgetting that unmatched columns become `NULL`
 
-If you forget the `ON` clause (or write a condition that's always true), you get a **Cartesian product** — every row of the left table paired with every row of the right table.
+After a LEFT, RIGHT, or FULL join, the columns from the side that had no match
+are `NULL`. Beginners often write code that assumes those columns are always
+populated, and then get surprised by `NULL`s in their results.
+
+Use `COALESCE` or `IS NULL` checks when you need to handle this:
 
 ```sql
--- BAD: no ON clause → 4 × 4 = 16 rows
+SELECT e.name, COALESCE(d.dept_name, 'Unassigned') AS dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id;
+```
+
+### 3. Comparing to `NULL` with `=`
+
+`NULL = NULL` is **not** true in SQL — it is `UNKNOWN`. To test for NULL you
+must use `IS NULL` or `IS NOT NULL`.
+
+```sql
+-- WRONG: never matches
+SELECT * FROM employees WHERE dept_id = NULL;
+
+-- RIGHT
+SELECT * FROM employees WHERE dept_id IS NULL;
+```
+
+### 4. Accidentally creating a Cartesian product
+
+If you forget the `ON` clause (or write a condition that is always true), you
+get a **Cartesian product** — every row of the left table paired with every
+row of the right table. With 1,000 employees and 10 departments that is
+10,000 rows, and the numbers explode fast.
+
+```sql
+-- DANGEROUS: no ON clause, produces a Cartesian product
 SELECT * FROM employees, departments;
-
--- BAD: always-true condition → same Cartesian product
-SELECT * FROM employees e JOIN departments d ON 1 = 1;
 ```
 
-### Mistake 4: Joining on the wrong column
+Always include an `ON` clause that actually restricts the match.
 
-A very common typo: joining on `emp_id` instead of `dept_id`.
+### 5. Joining on a non-unique column
+
+If you join on a column that has duplicates on one side, you will get
+**duplicate rows** in the result. For example, if two employees share the same
+`dept_id` and you join to a table that also has duplicates, you can end up
+with far more rows than expected.
+
+Join on a **primary key** or a **unique** column whenever possible.
+
+### 6. Assuming `RIGHT JOIN` is required
+
+Many developers avoid `RIGHT JOIN` entirely and just swap the tables in a
+`LEFT JOIN`. Both produce the same result, but LEFT JOIN is easier to read
+because the "main" table is always on the left.
 
 ```sql
--- WRONG: joins employee id to department id
-SELECT * FROM employees e
-JOIN departments d ON e.emp_id = d.dept_id;
-
--- RIGHT: joins the foreign key to the primary key
-SELECT * FROM employees e
-JOIN departments d ON e.dept_id = d.dept_id;
-```
-
-### Mistake 5: Assuming `RIGHT JOIN` is supported everywhere
-
-`RIGHT JOIN` is part of the SQL standard, but **MySQL does not support it**. Rewrite as a `LEFT JOIN` with the tables swapped:
-
-```sql
--- Instead of:
+-- These two queries return the same rows:
 SELECT * FROM employees e RIGHT JOIN departments d ON e.dept_id = d.dept_id;
-
--- Write:
 SELECT * FROM departments d LEFT JOIN employees e ON e.dept_id = d.dept_id;
 ```
 
-### Mistake 6: Forgetting to alias tables
+### 7. Forgetting that INNER JOIN is the default
 
-When joining multiple tables, always use aliases and qualify column names. Otherwise you'll get "ambiguous column" errors or worse — silent bugs.
+Writing `JOIN` without a qualifier is the same as `INNER JOIN`. This is fine
+when you want only matches, but it silently drops unmatched rows when you
+actually wanted a LEFT JOIN.
 
-```sql
--- BAD: ambiguous 'id'
-SELECT id FROM employees JOIN departments ON employees.id = departments.id;
+### 8. Mixing up which side is "left" and which is "right"
 
--- GOOD: qualified with aliases
-SELECT e.emp_id, d.dept_id
-FROM employees e JOIN departments d ON e.dept_id = d.dept_id;
-```
+In `FROM a LEFT JOIN b`, **`a` is the left table** and **`b` is the right
+table**. The LEFT JOIN keeps all rows from `a`. Beginners often write the
+tables in the wrong order and then wonder why their "all employees" query is
+missing employees.
 
-### Mistake 7: Using `JOIN` when you mean `CROSS JOIN` (or vice versa)
+### 9. Not knowing your database's support for FULL JOIN
 
-- `JOIN ... ON` requires a condition.
-- `CROSS JOIN` produces every combination (Cartesian product) — useful for generating grids, but dangerous if used by accident.
-
-### Mistake 8: Not checking for duplicate rows
-
-If the join condition matches multiple rows on one side, you'll get duplicates. Use `DISTINCT` or aggregate carefully.
+`FULL JOIN` is standard SQL, but not every database implements it. MySQL, for
+example, does not support it directly. If you need the behavior in MySQL,
+emulate it:
 
 ```sql
--- If two employees share dept_id, each dept row appears twice
-SELECT d.dept_name, COUNT(*)
-FROM departments d
-JOIN employees e ON e.dept_id = d.dept_id
-GROUP BY d.dept_name;
+SELECT * FROM employees e LEFT JOIN departments d ON e.dept_id = d.dept_id
+UNION
+SELECT * FROM employees e RIGHT JOIN departments d ON e.dept_id = d.dept_id;
 ```
+
+### 10. Joining on the wrong column
+
+A very common beginner error is joining on a column that looks similar but is
+not the actual foreign key. For example, joining `employees.dept_id` to
+`departments.dept_name` instead of `departments.dept_id`. The query may run
+without error but return nonsense.
+
+Always double-check that you are joining on the **primary key** of one table
+to the **foreign key** in the other.
 
 ---
 
-## 8. Practice Exercises
+## Quick Reference Cheat Sheet
 
-Try these on the sample tables above:
+| Join Type    | Rows Returned                                        |
+|--------------|------------------------------------------------------|
+| INNER JOIN   | Only rows that match in both tables                  |
+| LEFT JOIN    | All rows from the left table + matches from the right|
+| RIGHT JOIN   | All rows from the right table + matches from the left|
+| FULL JOIN    | All rows from both tables, matched where possible    |
 
-1. List all employees and their department names, including employees with no department.
-2. List all departments and the number of employees in each, including departments with zero employees.
-3. Find employees who are **not** in any department, and departments that have **no** employees.
-4. Rewrite the `RIGHT JOIN` example from Section 4 as a `LEFT JOIN`.
-5. Explain why `WHERE d.dept_name IS NULL` after a `LEFT JOIN` finds only unmatched left rows.
+## Key Takeaways
 
----
+1. **INNER JOIN** is the strictest — only matches survive.
+2. **LEFT JOIN** keeps everything from the left table; unmatched right columns
+   become `NULL`.
+3. **RIGHT JOIN** is the mirror of LEFT JOIN — most people just swap the
+   tables and use LEFT JOIN instead.
+4. **FULL JOIN** keeps everything from both tables.
+5. Use `ON` to define the match, `WHERE` to filter after the match.
+6. Always expect `NULL`s on the unmatched side of an outer join.
+7. Join on primary keys / unique columns to avoid duplicate rows.
 
-## Summary
-
-| Join | Keeps | Use when |
-|------|-------|----------|
-| `INNER JOIN` | Only matched rows | You want only rows that exist in both tables |
-| `LEFT JOIN` | All left rows + matches | You want all rows from the "main" table |
-| `RIGHT JOIN` | All right rows + matches | Rarely — prefer `LEFT JOIN` with swapped tables |
-| `FULL JOIN` | All rows from both | You want to see every row, matched or not |
-
-**Remember:** joins are about **matching rows across tables**. The join type decides what happens to rows that **don't** match.
-
-Happy querying! 🎉
+Master these four joins and you can answer almost any question that involves
+more than one table.
