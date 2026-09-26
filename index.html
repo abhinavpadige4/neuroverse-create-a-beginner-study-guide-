@@ -7,502 +7,477 @@
 <style>
   :root {
     --bg: #0f172a;
-    --card: #1e293b;
-    --border: #334155;
+    --panel: #1e293b;
     --text: #e2e8f0;
     --muted: #94a3b8;
     --accent: #38bdf8;
-    --accent2: #818cf8;
-    --green: #4ade80;
-    --red: #f87171;
-    --yellow: #fbbf24;
-    --code-bg: #0f172a;
+    --accent-2: #a78bfa;
+    --border: #334155;
+    --code-bg: #0b1220;
+    --good: #4ade80;
+    --warn: #fbbf24;
+    --bad: #f87171;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
     color: var(--text);
-    line-height: 1.7;
-    padding: 0;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
   }
-  .hero {
-    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a3e 100%);
-    padding: 80px 20px 60px;
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header.hero {
     text-align: center;
+    padding: 40px 20px 32px;
     border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
   }
-  .hero h1 {
-    font-size: 2.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     margin-bottom: 16px;
   }
-  .hero p {
-    font-size: 1.15rem;
+  h1 {
+    font-size: 2.4rem;
+    margin: 0 0 12px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.2;
+  }
+  .subtitle {
     color: var(--muted);
+    font-size: 1.05rem;
     max-width: 640px;
     margin: 0 auto;
   }
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-  }
   h2 {
     font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--accent);
     margin: 48px 0 16px;
     padding-bottom: 8px;
-    border-bottom: 2px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: #f1f5f9;
   }
   h3 {
     font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--accent2);
-    margin: 28px 0 10px;
+    margin: 24px 0 10px;
+    color: var(--accent);
+  }
+  h4 {
+    font-size: 1rem;
+    margin: 18px 0 8px;
+    color: var(--accent-2);
   }
   p { margin: 10px 0; }
-  ul, ol { margin: 10px 0 10px 24px; }
+  ul, ol { padding-left: 22px; }
   li { margin: 6px 0; }
-  strong { color: #f1f5f9; }
-  blockquote {
-    border-left: 4px solid var(--accent);
-    background: rgba(56, 189, 248, 0.08);
-    padding: 14px 18px;
-    margin: 16px 0;
-    border-radius: 0 8px 8px 0;
-    color: var(--muted);
-  }
-  blockquote strong { color: var(--accent); }
   code {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9em;
     background: var(--code-bg);
     padding: 2px 6px;
     border-radius: 4px;
-    font-size: 0.9em;
-    color: var(--green);
+    color: #fbbf24;
   }
   pre {
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 16px 20px;
+    padding: 16px 18px;
     overflow-x: auto;
     margin: 14px 0;
   }
   pre code {
-    background: none;
+    background: transparent;
     padding: 0;
-    color: var(--text);
+    color: #e2e8f0;
     font-size: 0.88rem;
-    line-height: 1.6;
+    line-height: 1.55;
   }
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 14px 0;
     font-size: 0.92rem;
+    background: var(--panel);
+    border-radius: 8px;
+    overflow: hidden;
   }
-  th {
-    background: var(--card);
-    color: var(--accent);
-    font-weight: 600;
-    text-align: left;
+  th, td {
     padding: 10px 14px;
-    border-bottom: 2px solid var(--border);
-  }
-  td {
-    padding: 9px 14px;
+    text-align: left;
     border-bottom: 1px solid var(--border);
   }
-  tr:hover td { background: rgba(56, 189, 248, 0.04); }
-  .toc {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin: 30px 0;
+  th {
+    background: #0b1220;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-  .toc h2 { margin-top: 0; border: none; padding: 0; }
-  .toc ol { margin-left: 20px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(56, 189, 248, 0.04); }
+  .callout {
+    background: rgba(56, 189, 248, 0.06);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout.warn {
+    background: rgba(251, 191, 36, 0.06);
+    border-left-color: var(--warn);
+  }
+  .callout.bad {
+    background: rgba(248, 113, 113, 0.06);
+    border-left-color: var(--bad);
+  }
+  .callout.good {
+    background: rgba(74, 222, 128, 0.06);
+    border-left-color: var(--good);
+  }
+  .callout strong { color: #f1f5f9; }
+  .toc {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0 40px;
+  }
+  .toc h3 { margin-top: 0; }
+  .toc ol { margin: 0; }
   .toc a { color: var(--accent); text-decoration: none; }
   .toc a:hover { text-decoration: underline; }
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    margin-right: 6px;
-  }
-  .badge-inner { background: rgba(74, 222, 128, 0.15); color: var(--green); }
-  .badge-left { background: rgba(56, 189, 248, 0.15); color: var(--accent); }
-  .badge-right { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
-  .badge-full { background: rgba(129, 140, 248, 0.15); color: var(--accent2); }
-  .badge-mistake { background: rgba(248, 113, 113, 0.15); color: var(--red); }
-  .mistake-card {
-    background: var(--card);
+  .diagram {
+    background: var(--code-bg);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--red);
-    border-radius: 0 8px 8px 0;
-    padding: 16px 20px;
-    margin: 14px 0;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 16px 0;
   }
-  .mistake-card h4 {
-    color: var(--red);
-    font-size: 1rem;
-    margin-bottom: 6px;
-  }
-  .mistake-card p { color: var(--muted); font-size: 0.95rem; }
-  .comparison-table th { text-align: center; }
-  .comparison-table td { text-align: center; }
-  .comparison-table td:first-child { text-align: left; font-weight: 600; }
-  .footer {
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
     text-align: center;
-    padding: 30px 20px;
     color: var(--muted);
     font-size: 0.85rem;
-    border-top: 1px solid var(--border);
   }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 1.8rem; }
-    .container { padding: 20px 14px 60px; }
-    table { font-size: 0.82rem; }
-    th, td { padding: 7px 8px; }
+  a { color: var(--accent); }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .pill.inner { background: rgba(74, 222, 128, 0.15); color: var(--good); }
+  .pill.left  { background: rgba(56, 189, 248, 0.15); color: var(--accent); }
+  .pill.right { background: rgba(167, 139, 250, 0.15); color: var(--accent-2); }
+  .pill.full  { background: rgba(251, 191, 36, 0.15); color: var(--warn); }
+  @media (max-width: 640px) {
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.35rem; }
+    .wrap { padding: 24px 16px 64px; }
+    th, td { padding: 8px 10px; font-size: 0.85rem; }
   }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="hero">
-  <h1>SQL Joins — A Beginner Study Guide</h1>
-  <p>Learn how to combine rows from two tables using INNER, LEFT, RIGHT, and FULL joins. Each section includes a short explanation, a small worked example, and a visual intuition.</p>
-</div>
+  <header class="hero">
+    <span class="badge">Beginner Study Guide</span>
+    <h1>SQL Joins, Explained Simply</h1>
+    <p class="subtitle">A friendly walkthrough of <strong>INNER</strong>, <strong>LEFT</strong>, <strong>RIGHT</strong>, and <strong>FULL</strong> joins — with one small example each and the mistakes beginners make most often.</p>
+  </header>
 
-<div class="container">
+  <nav class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#sample">Sample Tables</a></li>
+      <li><a href="#inner">INNER JOIN</a></li>
+      <li><a href="#left">LEFT JOIN</a></li>
+      <li><a href="#right">RIGHT JOIN</a></li>
+      <li><a href="#full">FULL JOIN</a></li>
+      <li><a href="#visual">Visual Summary</a></li>
+      <li><a href="#mistakes">Common Mistakes</a></li>
+      <li><a href="#reference">Quick Reference</a></li>
+      <li><a href="#practice">Practice Ideas</a></li>
+    </ol>
+  </nav>
 
-<div class="toc">
-  <h2>📖 Table of Contents</h2>
-  <ol>
-    <li><a href="#sample-tables">The Sample Tables</a></li>
-    <li><a href="#inner-join">INNER JOIN</a></li>
-    <li><a href="#left-join">LEFT JOIN (LEFT OUTER JOIN)</a></li>
-    <li><a href="#right-join">RIGHT JOIN (RIGHT OUTER JOIN)</a></li>
-    <li><a href="#full-join">FULL JOIN (FULL OUTER JOIN)</a></li>
-    <li><a href="#comparison">Quick Comparison</a></li>
-    <li><a href="#common-mistakes">Common Mistakes</a></li>
-    <li><a href="#practice">Practice Exercises</a></li>
-  </ol>
-</div>
+  <h2 id="sample">1. Sample Tables</h2>
+  <p>Every example in this guide uses the same two tiny tables so you can focus on the join logic instead of the data.</p>
 
-<h2 id="sample-tables">1. The Sample Tables</h2>
-<p>We'll use two small tables throughout this guide so you can follow along easily.</p>
+  <h3><code>employees</code></h3>
+  <table>
+    <thead><tr><th>employee_id</th><th>name</th><th>department_id</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Alice</td><td>10</td></tr>
+      <tr><td>2</td><td>Bob</td><td>20</td></tr>
+      <tr><td>3</td><td>Carol</td><td>30</td></tr>
+      <tr><td>4</td><td>Dan</td><td><em>NULL</em></td></tr>
+    </tbody>
+  </table>
 
-<h3><code>employees</code></h3>
-<table>
-  <tr><th>emp_id</th><th>name</th><th>dept_id</th></tr>
-  <tr><td>1</td><td>Alice</td><td>1</td></tr>
-  <tr><td>2</td><td>Bob</td><td>2</td></tr>
-  <tr><td>3</td><td>Carol</td><td>3</td></tr>
-  <tr><td>4</td><td>Dave</td><td>9</td></tr>
-</table>
+  <h3><code>departments</code></h3>
+  <table>
+    <thead><tr><th>department_id</th><th>department_name</th></tr></thead>
+    <tbody>
+      <tr><td>10</td><td>Engineering</td></tr>
+      <tr><td>20</td><td>Sales</td></tr>
+      <tr><td>40</td><td>Marketing</td></tr>
+    </tbody>
+  </table>
 
-<h3><code>departments</code></h3>
-<table>
-  <tr><th>dept_id</th><th>dept_name</th></tr>
-  <tr><td>1</td><td>Engineering</td></tr>
-  <tr><td>2</td><td>Sales</td></tr>
-  <tr><td>3</td><td>Marketing</td></tr>
-  <tr><td>4</td><td>HR</td></tr>
-</table>
+  <div class="callout">
+    <strong>Notice two things that will matter later:</strong>
+    <ul>
+      <li><strong>Dan</strong> has <code>department_id = NULL</code> — he is not assigned to any department.</li>
+      <li><strong>Marketing (40)</strong> has no employees at all.</li>
+    </ul>
+    These two "orphan" rows are exactly what LEFT, RIGHT, and FULL joins are designed to surface.
+  </div>
 
-<p>Notice two interesting facts:</p>
-<ul>
-  <li><strong>Dave</strong> (<code>emp_id = 4</code>) has <code>dept_id = 9</code>, but there is <strong>no department 9</strong>.</li>
-  <li><strong>HR</strong> (<code>dept_id = 4</code>) exists, but <strong>no employee</strong> belongs to it.</li>
-</ul>
-<p>These two "orphan" rows are exactly what make LEFT, RIGHT, and FULL joins interesting.</p>
+  <h2 id="inner">2. INNER JOIN</h2>
+  <h3>What it does</h3>
+  <p><code>INNER JOIN</code> returns only the rows where the join condition is true on <strong>both</strong> sides. If a row in the left table has no matching row in the right table (or vice versa), it is dropped.</p>
+  <p><code>INNER JOIN</code> is the default when you write <code>JOIN</code> without a qualifier.</p>
 
-<h2 id="inner-join">2. <span class="badge badge-inner">INNER</span> INNER JOIN</h2>
-
-<h3>What it does</h3>
-<p>An <code>INNER JOIN</code> returns <strong>only the rows that have a matching value in both tables</strong>. If a row in the left table has no match in the right table (or vice versa), it is dropped.</p>
-
-<h3>Example</h3>
-<pre><code>SELECT e.emp_id, e.name, d.dept_name
+  <h3>Example</h3>
+  <pre><code>SELECT e.name, d.department_name
 FROM employees e
 INNER JOIN departments d
-  ON e.dept_id = d.dept_id;</code></pre>
+  ON e.department_id = d.department_id;</code></pre>
 
-<h3>Result</h3>
-<table>
-  <tr><th>emp_id</th><th>name</th><th>dept_name</th></tr>
-  <tr><td>1</td><td>Alice</td><td>Engineering</td></tr>
-  <tr><td>2</td><td>Bob</td><td>Sales</td></tr>
-  <tr><td>3</td><td>Carol</td><td>Marketing</td></tr>
-</table>
+  <h3>Result</h3>
+  <table>
+    <thead><tr><th>name</th><th>department_name</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td>Engineering</td></tr>
+      <tr><td>Bob</td><td>Sales</td></tr>
+    </tbody>
+  </table>
 
-<h3>Why Dave and HR are missing</h3>
-<ul>
-  <li>Dave's <code>dept_id = 9</code> has no match in <code>departments</code> → dropped.</li>
-  <li>HR's <code>dept_id = 4</code> has no match in <code>employees</code> → dropped.</li>
-</ul>
+  <h3>Why this result?</h3>
+  <ul>
+    <li>Alice (10) matches Engineering (10) → kept.</li>
+    <li>Bob (20) matches Sales (20) → kept.</li>
+    <li>Carol (30) has no department with id 30 → dropped.</li>
+    <li>Dan has <code>department_id = NULL</code>. <code>NULL = 30</code> is not true, so Dan is dropped.</li>
+    <li>Marketing (40) has no employee with <code>department_id = 40</code> → dropped.</li>
+  </ul>
 
-<h3>Visual intuition</h3>
-<pre><code>employees   ∩   departments
-   ┌───┐         ┌───┐
-   │ A │         │ E │
-   │ B │         │ S │
-   │ C │         │ M │
-   │ D │         │ H │
-   └───┘         └───┘
-        INNER JOIN
-        ┌───────┐
-        │ A-E   │
-        │ B-S   │
-        │ C-M   │
-        └───────┘</code></pre>
+  <div class="callout good">
+    <strong>When to use it:</strong> Use <code>INNER JOIN</code> when you only care about rows that have a valid match on both sides — for example, "list every employee along with their department name" where you don't want to include unassigned employees.
+  </div>
 
-<h2 id="left-join">3. <span class="badge badge-left">LEFT</span> LEFT JOIN (LEFT OUTER JOIN)</h2>
+  <h2 id="left">3. LEFT JOIN (LEFT OUTER JOIN)</h2>
+  <h3>What it does</h3>
+  <p><code>LEFT JOIN</code> keeps <strong>every row from the left table</strong>. For each left row, it attaches the matching right row if one exists; otherwise the right-side columns are filled with <code>NULL</code>.</p>
 
-<h3>What it does</h3>
-<p>A <code>LEFT JOIN</code> returns <strong>all rows from the left table</strong>, plus the matching rows from the right table. If there is no match on the right, the right-side columns are filled with <code>NULL</code>.</p>
-
-<h3>Example</h3>
-<pre><code>SELECT e.emp_id, e.name, d.dept_name
+  <h3>Example</h3>
+  <pre><code>SELECT e.name, d.department_name
 FROM employees e
 LEFT JOIN departments d
-  ON e.dept_id = d.dept_id;</code></pre>
+  ON e.department_id = d.department_id;</code></pre>
 
-<h3>Result</h3>
-<table>
-  <tr><th>emp_id</th><th>name</th><th>dept_name</th></tr>
-  <tr><td>1</td><td>Alice</td><td>Engineering</td></tr>
-  <tr><td>2</td><td>Bob</td><td>Sales</td></tr>
-  <tr><td>3</td><td>Carol</td><td>Marketing</td></tr>
-  <tr><td>4</td><td>Dave</td><td><strong>NULL</strong></td></tr>
-</table>
+  <h3>Result</h3>
+  <table>
+    <thead><tr><th>name</th><th>department_name</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td>Engineering</td></tr>
+      <tr><td>Bob</td><td>Sales</td></tr>
+      <tr><td>Carol</td><td><em>NULL</em></td></tr>
+      <tr><td>Dan</td><td><em>NULL</em></td></tr>
+    </tbody>
+  </table>
 
-<h3>Why Dave shows up with NULL</h3>
-<p>Dave is in the left table (<code>employees</code>), so he is always kept. There is no department 9, so <code>dept_name</code> becomes <code>NULL</code>.</p>
+  <h3>Why this result?</h3>
+  <ul>
+    <li>Alice and Bob match as before.</li>
+    <li>Carol has no matching department, but she is still on the left side, so she is kept with <code>department_name = NULL</code>.</li>
+    <li>Dan's <code>department_id</code> is <code>NULL</code>, so no match is found — but he is still kept, again with <code>department_name = NULL</code>.</li>
+    <li>Marketing (40) is on the right side and has no match, so it is dropped.</li>
+  </ul>
 
-<h3>Visual intuition</h3>
-<pre><code>employees   LEFT JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ D-NULL   │  ← Dave kept, dept is NULL
-        └──────────┘</code></pre>
+  <div class="callout good">
+    <strong>When to use it:</strong> Use <code>LEFT JOIN</code> when you want "everything from the left, plus whatever matches on the right." A classic pattern is finding rows that <strong>don't</strong> have a match:
+    <pre><code>SELECT e.name
+FROM employees e
+LEFT JOIN departments d ON e.department_id = d.department_id
+WHERE d.department_id IS NULL;   -- employees with no department</code></pre>
+  </div>
 
-<blockquote><strong>Tip:</strong> <code>LEFT JOIN</code> is the most common join you'll use in practice — for example, "list all customers, even those who have never placed an order."</blockquote>
+  <h2 id="right">4. RIGHT JOIN (RIGHT OUTER JOIN)</h2>
+  <h3>What it does</h3>
+  <p><code>RIGHT JOIN</code> is the mirror image of <code>LEFT JOIN</code>. It keeps <strong>every row from the right table</strong> and fills in <code>NULL</code> for the left-side columns when there is no match.</p>
 
-<h2 id="right-join">4. <span class="badge badge-right">RIGHT</span> RIGHT JOIN (RIGHT OUTER JOIN)</h2>
-
-<h3>What it does</h3>
-<p>A <code>RIGHT JOIN</code> returns <strong>all rows from the right table</strong>, plus the matching rows from the left table. If there is no match on the left, the left-side columns are filled with <code>NULL</code>.</p>
-
-<h3>Example</h3>
-<pre><code>SELECT e.emp_id, e.name, d.dept_name
+  <h3>Example</h3>
+  <pre><code>SELECT e.name, d.department_name
 FROM employees e
 RIGHT JOIN departments d
-  ON e.dept_id = d.dept_id;</code></pre>
+  ON e.department_id = d.department_id;</code></pre>
 
-<h3>Result</h3>
-<table>
-  <tr><th>emp_id</th><th>name</th><th>dept_name</th></tr>
-  <tr><td>1</td><td>Alice</td><td>Engineering</td></tr>
-  <tr><td>2</td><td>Bob</td><td>Sales</td></tr>
-  <tr><td>3</td><td>Carol</td><td>Marketing</td></tr>
-  <tr><td><strong>NULL</strong></td><td><strong>NULL</strong></td><td>HR</td></tr>
-</table>
+  <h3>Result</h3>
+  <table>
+    <thead><tr><th>name</th><th>department_name</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td>Engineering</td></tr>
+      <tr><td>Bob</td><td>Sales</td></tr>
+      <tr><td><em>NULL</em></td><td>Marketing</td></tr>
+    </tbody>
+  </table>
 
-<h3>Why HR shows up with NULLs</h3>
-<p>HR is in the right table (<code>departments</code>), so it is always kept. No employee has <code>dept_id = 4</code>, so <code>emp_id</code> and <code>name</code> become <code>NULL</code>.</p>
+  <h3>Why this result?</h3>
+  <ul>
+    <li>Alice and Bob match as before.</li>
+    <li>Marketing (40) has no matching employee, but it is on the right side, so it is kept with <code>name = NULL</code>.</li>
+    <li>Carol and Dan are on the left side with no match, so they are dropped.</li>
+  </ul>
 
-<h3>Visual intuition</h3>
-<pre><code>employees   RIGHT JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ NULL-H   │  ← HR kept, employee is NULL
-        └──────────┘</code></pre>
+  <div class="callout warn">
+    <strong>When to use it:</strong> <code>RIGHT JOIN</code> is rarely needed — you can almost always rewrite it as a <code>LEFT JOIN</code> by swapping the tables. Some teams ban <code>RIGHT JOIN</code> in code review for that reason. Still, it's worth knowing because you'll see it in legacy queries.
+  </div>
 
-<blockquote><strong>Note:</strong> <code>RIGHT JOIN</code> is rarely used because you can always rewrite it as a <code>LEFT JOIN</code> by swapping the tables. Some databases (e.g., MySQL) don't even support <code>RIGHT JOIN</code> directly.</blockquote>
+  <h2 id="full">5. FULL JOIN (FULL OUTER JOIN)</h2>
+  <h3>What it does</h3>
+  <p><code>FULL JOIN</code> keeps <strong>every row from both tables</strong>. When a row has no match on the other side, the missing columns are filled with <code>NULL</code>. It is the union of a <code>LEFT JOIN</code> and a <code>RIGHT JOIN</code>.</p>
 
-<h2 id="full-join">5. <span class="badge badge-full">FULL</span> FULL JOIN (FULL OUTER JOIN)</h2>
-
-<h3>What it does</h3>
-<p>A <code>FULL JOIN</code> returns <strong>all rows from both tables</strong>. Rows that match are combined; rows that don't match are kept with <code>NULL</code> on the side that has no match.</p>
-
-<h3>Example</h3>
-<pre><code>SELECT e.emp_id, e.name, d.dept_name
+  <h3>Example</h3>
+  <pre><code>SELECT e.name, d.department_name
 FROM employees e
 FULL JOIN departments d
-  ON e.dept_id = d.dept_id;</code></pre>
+  ON e.department_id = d.department_id;</code></pre>
 
-<h3>Result</h3>
-<table>
-  <tr><th>emp_id</th><th>name</th><th>dept_name</th></tr>
-  <tr><td>1</td><td>Alice</td><td>Engineering</td></tr>
-  <tr><td>2</td><td>Bob</td><td>Sales</td></tr>
-  <tr><td>3</td><td>Carol</td><td>Marketing</td></tr>
-  <tr><td>4</td><td>Dave</td><td><strong>NULL</strong></td></tr>
-  <tr><td><strong>NULL</strong></td><td><strong>NULL</strong></td><td>HR</td></tr>
-</table>
+  <h3>Result</h3>
+  <table>
+    <thead><tr><th>name</th><th>department_name</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td>Engineering</td></tr>
+      <tr><td>Bob</td><td>Sales</td></tr>
+      <tr><td>Carol</td><td><em>NULL</em></td></tr>
+      <tr><td>Dan</td><td><em>NULL</em></td></tr>
+      <tr><td><em>NULL</em></td><td>Marketing</td></tr>
+    </tbody>
+  </table>
 
-<h3>Why both Dave and HR appear</h3>
-<ul>
-  <li>Dave has no matching department → kept with <code>dept_name = NULL</code>.</li>
-  <li>HR has no matching employee → kept with <code>emp_id = NULL</code> and <code>name = NULL</code>.</li>
-</ul>
+  <h3>Why this result?</h3>
+  <ul>
+    <li>Alice and Bob match as before.</li>
+    <li>Carol and Dan are kept from the left side with <code>department_name = NULL</code>.</li>
+    <li>Marketing is kept from the right side with <code>name = NULL</code>.</li>
+  </ul>
 
-<h3>Visual intuition</h3>
-<pre><code>employees   FULL JOIN   departments
-   ┌───┐              ┌───┐
-   │ A │              │ E │
-   │ B │              │ S │
-   │ C │              │ M │
-   │ D │              │ H │
-   └───┘              └───┘
-        ┌──────────┐
-        │ A-E      │
-        │ B-S      │
-        │ C-M      │
-        │ D-NULL   │  ← Dave kept
-        │ NULL-H   │  ← HR kept
-        └──────────┘</code></pre>
+  <div class="callout good">
+    <strong>When to use it:</strong> Use <code>FULL JOIN</code> when you need a complete picture of both sides — for example, reconciling two lists and finding rows that appear in only one of them. Note that not every database supports <code>FULL JOIN</code> natively (MySQL does not; PostgreSQL, SQL Server, Oracle, and BigQuery do).
+  </div>
 
-<blockquote><strong>Note:</strong> Not all databases support <code>FULL JOIN</code> natively. MySQL, for example, does not — you can simulate it with <code>LEFT JOIN ... UNION ... RIGHT JOIN</code>.</blockquote>
+  <h2 id="visual">6. Visual Summary</h2>
+  <div class="diagram">   LEFT TABLE          RIGHT TABLE
+   ┌─────────┐        ┌─────────┐
+   │  A  B  C│        │  B  C  D│
+   └─────────┘        └─────────┘
 
-<h2 id="comparison">6. Quick Comparison</h2>
-<table class="comparison-table">
-  <tr><th>Join Type</th><th>Keeps Left Rows?</th><th>Keeps Right Rows?</th><th>Result Rows</th></tr>
-  <tr><td>INNER JOIN</td><td>Only if matched</td><td>Only if matched</td><td>3</td></tr>
-  <tr><td>LEFT JOIN</td><td>✅ Always</td><td>Only if matched</td><td>4</td></tr>
-  <tr><td>RIGHT JOIN</td><td>Only if matched</td><td>✅ Always</td><td>4</td></tr>
-  <tr><td>FULL JOIN</td><td>✅ Always</td><td>✅ Always</td><td>5</td></tr>
-</table>
+   INNER JOIN  →  B  C
+   LEFT JOIN   →  A  B  C  (D dropped)
+   RIGHT JOIN  →  B  C  D  (A dropped)
+   FULL JOIN   →  A  B  C  D</div>
 
-<h2 id="common-mistakes">7. <span class="badge badge-mistake">⚠️</span> Common Mistakes</h2>
+  <h2 id="mistakes">7. Common Mistakes</h2>
 
-<div class="mistake-card">
-  <h4>1. Confusing <code>ON</code> with <code>WHERE</code></h4>
-  <p><strong>Wrong:</strong> Putting the join condition in <code>WHERE</code> instead of <code>ON</code> when using an outer join.</p>
-  <pre><code>-- ❌ This turns the LEFT JOIN into an INNER JOIN!
-SELECT *
+  <h3>Mistake 1: Forgetting that <code>NULL = NULL</code> is not true</h3>
+  <p>In SQL, <code>NULL</code> compared to anything (including another <code>NULL</code>) evaluates to <code>UNKNOWN</code>, not <code>TRUE</code>. So a join condition like <code>ON e.department_id = d.department_id</code> will <strong>never</strong> match a <code>NULL</code> <code>department_id</code>. That's why Dan disappears from the <code>INNER JOIN</code> result.</p>
+  <p>If you truly need to match <code>NULL</code>s, use <code>IS NOT DISTINCT FROM</code> (PostgreSQL) or <code>IS NULL</code> checks, or <code>COALESCE</code> both sides to a sentinel value.</p>
+
+  <h3>Mistake 2: Putting the join condition in <code>WHERE</code> instead of <code>ON</code></h3>
+  <p>For <code>INNER JOIN</code> the two are usually equivalent, but for <code>LEFT</code>/<code>RIGHT</code>/<code>FULL</code> joins they are <strong>not</strong>. Consider:</p>
+  <pre><code>-- WRONG: filters AFTER the join, turning the LEFT JOIN into an INNER JOIN
+SELECT e.name, d.department_name
 FROM employees e
 LEFT JOIN departments d
-WHERE e.dept_id = d.dept_id;
+WHERE e.department_id = d.department_id;
 
--- ✅ Correct: use ON for the join condition
-SELECT *
+-- RIGHT: filters DURING the join
+SELECT e.name, d.department_name
 FROM employees e
 LEFT JOIN departments d
-  ON e.dept_id = d.dept_id;</code></pre>
-  <p>When you filter in <code>WHERE</code>, rows with <code>NULL</code> on the right side get eliminated because <code>NULL = anything</code> is never true. The <code>ON</code> clause controls <em>how</em> rows are matched; <code>WHERE</code> filters <em>after</em> the join.</p>
-</div>
+  ON e.department_id = d.department_id;</code></pre>
+  <p>The first query drops Carol and Dan because their <code>department_id</code> doesn't equal any <code>d.department_id</code> — the <code>WHERE</code> clause runs after the join and removes the <code>NULL</code> rows. The second query keeps them.</p>
+  <div class="callout warn">
+    <strong>Rule of thumb:</strong> put the join condition in <code>ON</code>; put filters that apply to the joined result in <code>WHERE</code>.
+  </div>
 
-<div class="mistake-card">
-  <h4>2. Forgetting to handle <code>NULL</code> values</h4>
-  <p>After a LEFT or RIGHT join, unmatched columns contain <code>NULL</code>. If you don't account for this, your results may look wrong or your aggregations may be off.</p>
-  <pre><code>-- ❌ COUNT(dept_name) skips NULLs, giving a misleading count
-SELECT COUNT(dept_name) FROM employees e
-LEFT JOIN departments d ON e.dept_id = d.dept_id;
+  <h3>Mistake 3: Accidentally creating a Cartesian product</h3>
+  <p>If you forget the <code>ON</code> clause (or write a condition that is always true, like <code>ON 1 = 1</code>), you get a <strong>Cartesian product</strong> — every row of the left table paired with every row of the right table. With 1,000 employees and 100 departments, that's 100,000 rows, most of which are meaningless.</p>
+  <p>Always double-check that your <code>ON</code> clause references real columns from <strong>both</strong> tables.</p>
 
--- ✅ Use COALESCE or COUNT(*) to handle NULLs
-SELECT COUNT(*) FROM employees e
-LEFT JOIN departments d ON e.dept_id = d.dept_id;
+  <h3>Mistake 4: Joining on non-unique columns and getting duplicated rows</h3>
+  <p>If the right table has multiple rows that match one row on the left, the left row is duplicated once per match. For example, if <code>departments</code> had two rows with <code>department_id = 10</code>, Alice would appear twice in the result.</p>
+  <p>Before joining, check that the join column is unique on the side you're "expanding into." If it isn't, aggregate first or use <code>DISTINCT</code>.</p>
 
--- Or replace NULLs with a label
-SELECT e.name, COALESCE(d.dept_name, 'Unassigned') AS dept_name
-FROM employees e
-LEFT JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
-</div>
+  <h3>Mistake 5: Assuming <code>RIGHT JOIN</code> is portable</h3>
+  <p><code>RIGHT JOIN</code> is part of the SQL standard, but some databases (notably MySQL) don't support it. If portability matters, rewrite as a <code>LEFT JOIN</code> with the tables swapped.</p>
 
-<div class="mistake-card">
-  <h4>3. Accidentally creating a Cartesian product</h4>
-  <p>Forgetting the <code>ON</code> clause (or using a condition that's always true) produces a Cartesian product — every row from one table paired with every row from the other.</p>
-  <pre><code>-- ❌ No ON clause = Cartesian product (4 × 4 = 16 rows!)
-SELECT *
-FROM employees e
-JOIN departments d;
+  <h3>Mistake 6: Forgetting that <code>FULL JOIN</code> isn't universal either</h3>
+  <p>MySQL has no <code>FULL JOIN</code> at all. The common workaround is:</p>
+  <pre><code>SELECT ... FROM a LEFT JOIN b ON ...
+UNION
+SELECT ... FROM a RIGHT JOIN b ON ...;</code></pre>
+  <p>Or, in MySQL specifically, <code>LEFT JOIN ... UNION ... LEFT JOIN</code> with the tables swapped.</p>
 
--- ✅ Always specify the join condition
-SELECT *
-FROM employees e
-JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
-</div>
+  <h3>Mistake 7: Mixing up which side is "kept"</h3>
+  <p>A quick mental check: in <code>A LEFT JOIN B</code>, <strong>A is always kept</strong>. In <code>A RIGHT JOIN B</code>, <strong>B is always kept</strong>. If you find yourself writing <code>RIGHT JOIN</code> and then wondering why rows are missing, try swapping the tables and using <code>LEFT JOIN</code> instead — it's easier to reason about.</p>
 
-<div class="mistake-card">
-  <h4>4. Joining on non-unique columns</h4>
-  <p>If the join column has duplicates, you'll get more rows than expected. Always join on a primary key or a unique column.</p>
-  <pre><code>-- ❌ If dept_name has duplicates, you get extra rows
-SELECT *
-FROM employees e
-JOIN departments d ON e.dept_name = d.dept_name;
+  <h2 id="reference">8. Quick Reference</h2>
+  <table>
+    <thead><tr><th>Join type</th><th>Left rows kept</th><th>Right rows kept</th><th>Missing side filled with</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill inner">INNER</span></td><td>only matches</td><td>only matches</td><td>(rows dropped)</td></tr>
+      <tr><td><span class="pill left">LEFT</span></td><td>all</td><td>only matches</td><td><code>NULL</code> on right</td></tr>
+      <tr><td><span class="pill right">RIGHT</span></td><td>only matches</td><td>all</td><td><code>NULL</code> on left</td></tr>
+      <tr><td><span class="pill full">FULL</span></td><td>all</td><td>all</td><td><code>NULL</code> on either side</td></tr>
+    </tbody>
+  </table>
 
--- ✅ Join on the unique key
-SELECT *
-FROM employees e
-JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
-</div>
+  <h2 id="practice">9. Practice Ideas</h2>
+  <p>Try these on the sample tables above to test your understanding:</p>
+  <ol>
+    <li>List every department, even those with no employees.</li>
+    <li>List every employee who is not assigned to a department.</li>
+    <li>Show every employee and department, marking which side each row came from (hint: check for <code>NULL</code> on one side).</li>
+    <li>Rewrite the <code>RIGHT JOIN</code> example as a <code>LEFT JOIN</code>.</li>
+    <li>Rewrite the <code>FULL JOIN</code> example using <code>UNION</code>.</li>
+  </ol>
+  <p>If you can answer all five without looking back, you've got joins down.</p>
 
-<div class="mistake-card">
-  <h4>5. Assuming <code>RIGHT JOIN</code> is supported everywhere</h4>
-  <p>MySQL does not support <code>RIGHT JOIN</code>. PostgreSQL, SQL Server, and Oracle do. If you need portability, rewrite as a <code>LEFT JOIN</code> by swapping the table order.</p>
-  <pre><code>-- ❌ Not supported in MySQL
-SELECT * FROM employees e
-RIGHT JOIN departments d ON e.dept_id = d.dept_id;
-
--- ✅ Portable: swap the tables and use LEFT JOIN
-SELECT * FROM departments d
-LEFT JOIN employees e ON e.dept_id = d.dept_id;</code></pre>
-</div>
-
-<div class="mistake-card">
-  <h4>6. Using <code>=</code> to compare <code>NULL</code> values</h4>
-  <p>In SQL, <code>NULL = NULL</code> evaluates to <code>UNKNOWN</code>, not <code>TRUE</code>. This means rows with <code>NULL</code> keys will never match in a join.</p>
-  <pre><code>-- ❌ NULLs will never match
-SELECT * FROM t1 JOIN t2 ON t1.id = t2.id;
-
--- ✅ Use IS to handle NULLs
-SELECT * FROM t1 JOIN t2 ON t1.id IS NOT DISTINCT FROM t2.id;
--- or
-SELECT * FROM t1 JOIN t2 ON (t1.id = t2.id OR (t1.id IS NULL AND t2.id IS NULL));</code></pre>
-</div>
-
-<h2 id="practice">8. Practice Exercises</h2>
-<ol>
-  <li>Write a query that lists all employees and their department names, showing "Unassigned" for employees without a department.</li>
-  <li>Write a query that finds departments with no employees.</li>
-  <li>Write a query that returns all employees and departments, even if they don't match (FULL JOIN).</li>
-  <li>Given a <code>orders</code> table, write a query that lists all customers and their total order count, including customers with zero orders.</li>
-</ol>
+  <footer>
+    SQL Joins — A Beginner Study Guide · Markdown source: <a href="sql_joins_guide.md">sql_joins_guide.md</a>
+  </footer>
 
 </div>
-
-<div class="footer">
-  <p>SQL Joins Study Guide — Built for beginners 🚀</p>
-</div>
-
 </body>
 </html>
